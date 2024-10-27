@@ -4,21 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="script.js">
-    <title>Food Product Store</title>
+    <title>Stylish Form</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Food Product Store</h1>
-    </header>
-    <main>
-        <div class="product">
-            <h2>Delicious Pizza</h2>
-            <p>Price: PKR 10</p>
-            <button id="jazzcash-button">Pay with JazzCash</button> <!-- JazzCash Button -->
-        </div>
-    </main>
+    <div class="form-container">
+        <h2>Registration Form</h2>
+        <form id="registrationForm" onsubmit="sendEmail(event)">
+            <div class="label-group">
+                <div>
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div>
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+            <label for="birthday">Birthday</label>
+            <input type="date" id="birthday" name="birthday" required>
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="object">Choose Object</label>
+            <select id="object" name="object" required>
+                <option value="">Select an object</option>
+                <option value="object1">Object 1</option>
+                <option value="object2">Object 2</option>
+                <option value="object3">Object 3</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="message" style="margin-top: 20px; color: #28a745; font-weight: bold;"></div>
+    </div>
 
-    <script src="script.js"></script>
+    <script>
+        (function(){
+            emailjs.init("service_6t9nuzt"); // Replace with your EmailJS user ID
+        })();
+
+        function sendEmail(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const form = event.target;
+            const templateParams = {
+                firstName: form.firstName.value,
+                lastName: form.lastName.value,
+                birthday: form.birthday.value,
+                gender: form.gender.value,
+                email: form.email.value,
+                phone: form.phone.value,
+                object: form.object.value,
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert('Thank you! Your registration has been submitted.');
+                    form.reset(); // Reset the form
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Oops! Something went wrong. Please try again later.');
+                });
+        }
+    </script>
 </body>
 </html>
